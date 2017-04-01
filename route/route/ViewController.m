@@ -13,6 +13,7 @@
 
 @property (nonatomic, strong) MXRouteView *routeView;
 @property (nonatomic, strong) UIButton *clearButton;
+@property (nonatomic, strong) UIButton *calculateButton;
 
 @end
 
@@ -23,12 +24,18 @@
 
     [self loadRouteView];
     [self loadClearButton];
+    [self loadCalculateButton];
 }
 
 #pragma mark - click method
 - (void)clickClearView
 {
     [_routeView clearRouteView];
+}
+
+- (void)clickCalculateRoute
+{
+    [_routeView calculateRoute];
 }
 
 #pragma mark - lazy load
@@ -53,6 +60,21 @@
         [_clearButton addTarget:self action:@selector(clickClearView) forControlEvents:UIControlEventTouchUpInside];
         _clearButton.center = CGPointMake(kScreenWidth / 2, kScreenWidth + 40);
         [self.view addSubview:_clearButton];
+    }
+}
+
+- (void)loadCalculateButton
+{
+    if (!_calculateButton) {
+        _calculateButton = [[UIButton alloc] init];
+        _calculateButton.frame = CGRectMake(0, 0, 100, 30);
+        _calculateButton.layer.masksToBounds = YES;
+        _calculateButton.layer.cornerRadius = 5.f;
+        _calculateButton.backgroundColor = [UIColor blackColor];
+        [_calculateButton setTitle:@"计算路线" forState:UIControlStateNormal];
+        [_calculateButton addTarget:self action:@selector(clickCalculateRoute) forControlEvents:UIControlEventTouchUpInside];
+        _calculateButton.center = CGPointMake(kScreenWidth / 2, kScreenWidth + 80);
+        [self.view addSubview:_calculateButton];
     }
 }
 

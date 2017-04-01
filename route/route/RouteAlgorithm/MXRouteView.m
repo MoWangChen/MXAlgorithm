@@ -19,6 +19,7 @@ static NSInteger const kDefaultCol = 5;
 @property (nonatomic, assign) NSInteger col;
 @property (nonatomic, strong) NSMutableArray *AllPointArray;
 @property (nonatomic, strong) NSMutableArray *trashArray;
+@property (nonatomic, strong) NSArray *routeArray;
 @property (nonatomic, strong) UITapGestureRecognizer *tap;
 
 @end
@@ -51,6 +52,30 @@ static NSInteger const kDefaultCol = 5;
         [[UIColor redColor] setFill];
         [path fill];
     }
+    
+    if (!_routeArray) {
+        return;
+    }
+    
+    MXPoint *beginPoint = _routeArray.firstObject;
+    UIBezierPath *routePath = [UIBezierPath bezierPath];
+    routePath.lineWidth = 3.f;
+    for (MXPoint *point in _routeArray) {
+        CGFloat x = (point.y * 2 + 1) * (self.frame.size.width / _col / 2);
+        CGFloat y = (point.x * 2 + 1) * (self.frame.size.height / _row / 2);
+        if (point == beginPoint) {
+            [routePath moveToPoint:CGPointMake(x, y)];
+            
+            UIBezierPath *beginCircle = [UIBezierPath bezierPathWithOvalInRect:(CGRect){x - 15, y - 15, 30 , 30}];
+            [[UIColor purpleColor] setFill];
+            [beginCircle fill];
+            
+        }else {
+            [routePath addLineToPoint:CGPointMake(x, y)];
+        }
+    }
+    [[UIColor purpleColor] setStroke];
+    [routePath stroke];
 }
 
 #pragma mark - click method
@@ -68,10 +93,17 @@ static NSInteger const kDefaultCol = 5;
 
 - (void)clearRouteView
 {
+    _routeArray = nil;
     for (MXPoint *point in _trashArray) {
         point.isTrash = NO;
     }
     [self.trashArray removeAllObjects];
+    [self setNeedsDisplay];
+}
+
+- (void)calculateRoute
+{
+    _routeArray = [MXPoint calculateRoute:self.AllPointArray];
     [self setNeedsDisplay];
 }
 

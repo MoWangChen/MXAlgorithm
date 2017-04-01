@@ -14,5 +14,6 @@
 @interface MXRouteView : UIView
 
 - (void)clearRouteView;
+- (void)calculateRoute;
 
 @end
