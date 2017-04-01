@@ -203,6 +203,7 @@
 
 + (NSArray *)calculateRoute:(NSArray <MXPoint *>*)pointArray
 {
+    [[self realRouteArray] removeAllObjects];
     [self clearAllPointsUserd:pointArray];
     MXPoint *startPoint = nil;
     for (MXPoint *point in pointArray) {
@@ -247,7 +248,6 @@
         if (direction != MXRunDirectionNone) {
             
             [[self tempRouteArray] removeAllObjects];
-            [[self realRouteArray] removeAllObjects];
             [[self class] clearAllPointsUserd:pointArray];
             [self canRunInArray:pointArray direction:direction];
         }
@@ -317,6 +317,7 @@
                 [[self realRouteArray] addObjectsFromArray:[self tempRouteArray]];
             }else {
                 NSLog(@"重新走");
+                isDirectionEnd = YES;
                 [self backSteps:pointArray];
             }
         }
