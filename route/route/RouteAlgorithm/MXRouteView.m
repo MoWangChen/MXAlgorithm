@@ -104,6 +104,11 @@ static NSInteger const kDefaultCol = 5;
 - (void)calculateRoute
 {
     _routeArray = [MXPoint calculateRoute:self.AllPointArray];
+    if (_routeArray == nil) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"无可行路线" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+        [alert show];
+    }
+    
     [self setNeedsDisplay];
 }
 
