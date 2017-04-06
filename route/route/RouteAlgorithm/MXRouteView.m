@@ -86,8 +86,15 @@ static NSInteger const kDefaultCol = 5;
     NSInteger colIndex = (NSInteger)(touchPoint.x / self.frame.size.width * _col);
     NSInteger index = rowIndex * _col + colIndex;
     MXPoint *point = _AllPointArray[index];
-    point.isTrash = YES;
-    [self.trashArray addObject:point];
+    if (point.isTrash) {
+        point.isTrash = NO;
+        if ([self.trashArray containsObject:point]) {
+            [self.trashArray removeObject:point];
+        }
+    }else {
+        point.isTrash = YES;
+        [self.trashArray addObject:point];
+    }
     [self setNeedsDisplay];
 }
 
